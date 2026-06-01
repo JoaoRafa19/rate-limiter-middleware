@@ -31,6 +31,13 @@ func NewApi(mux *http.ServeMux) *Api {
 		}),
 		),
 	)
+	ipLim := newIpLimiter(rate.Every(5*time.Second), 10)
+	mux.Handle("/iplimited", 
+	IPRateLimiter(ipLim)(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(200)
+		w.Write([]byte("ip limiter ok "))
+	})),
+)
 
 	// final handler will be the mux wrapped by logger
 	return &Api{
