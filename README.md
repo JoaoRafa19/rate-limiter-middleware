@@ -40,3 +40,12 @@ func (v *visitors) get(ip string) *rate.Limiter {
     return l
 }
 ```
+## Run 
+```bash
+go run ./cmd/main.go
+```
+## Test 
+CURL 
+```bash
+for i in $(seq 1 11); do curl -s -o /dev/null -w "%{http_code}\n" localhost:8000/limited; done
+```
